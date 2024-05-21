@@ -3,8 +3,9 @@ package com.rpg.demo;
 import java.util.Random;
 
 import com.rpg.demo.archetypes.Archetype;
-import com.rpg.demo.archetypes.Mage;
 import com.rpg.demo.fighter.Fighter;
+import com.rpg.demo.fighter.SimpleFighter;
+import com.rpg.demo.races.Race;
 
 public class Character implements Fighter {
 	private String name;
@@ -15,12 +16,14 @@ public class Character implements Fighter {
 	private int dexterity;
 	private Energy energy;
 	private Archetype archetype;
+	private Race race;
 
 	Random gerador = new Random();
 
-	Character(String name, Archetype archetype) {
-		this.setName(name);
+	Character(String name, Archetype archetype, Race race) {
+		this.name = name;
 		this.archetype = archetype;
+		this.race = race;
 		this.maxLifePoints = 100;
 		this.lifePoints = this.maxLifePoints;
 		this.strength = gerador.nextInt(10) + 1;
@@ -30,7 +33,6 @@ public class Character implements Fighter {
 	}
 	
 	public Character(String name) {
-        this(name, new Mage());
     }
 
 	public Archetype getArchetype() {
@@ -63,6 +65,31 @@ public class Character implements Fighter {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public void attack(SimpleFighter enemy) {
+	    enemy.receiveDamage(this.strength + gerador.nextInt(10) + 1);
+	}
+
+	@Override
+	public int receiveDamage(int attackPoints) {
+	    int damage = this.defense - attackPoints;
+	    if (damage < 1) {
+	        this.lifePoints += damage;
+	    }
+	    if (this.lifePoints == 0 || this.lifePoints < 1) {
+	        this.lifePoints = -1;
+	    }
+	    return this.lifePoints;
+	}
+
+	public Race getRace() {
+		return race;
+	}
+
+	public void setRace(Race race) {
+		this.race = race;
 	}
 	
 }
