@@ -24,7 +24,7 @@ public class Character implements Fighter {
 		this.name = name;
 		this.archetype = archetype;
 		this.race = race;
-		this.maxLifePoints = 100;
+		this.maxLifePoints = this.race.getMaxLifePoints() / 2;
 		this.lifePoints = this.maxLifePoints;
 		this.strength = gerador.nextInt(10) + 1;
 		this.defense = gerador.nextInt(10) + 1;
@@ -69,7 +69,9 @@ public class Character implements Fighter {
 
 	@Override
 	public void attack(SimpleFighter enemy) {
-	    enemy.receiveDamage(this.strength + gerador.nextInt(10) + 1);
+		int damage = this.strength + gerador.nextInt(10) + 1;
+    	System.out.println(" Força do ataque --- " + damage);
+	    enemy.receiveDamage(damage);
 	}
 
 	@Override
@@ -83,6 +85,27 @@ public class Character implements Fighter {
 	    }
 	    return this.lifePoints;
 	}
+	
+	@Override
+	public void special(SimpleFighter enemy) {
+        this.maxLifePoints += 10;
+        enemy.receiveDamage(40);
+    }
+	
+	@Override
+	public void levelUp() {
+        this.maxLifePoints += gerador.nextInt(10) + 1;
+        this.dexterity += gerador.nextInt(10) + 1;
+        this.strength += gerador.nextInt(10) + 1;
+        this.defense += gerador.nextInt(10) + 1;
+        if (this.energy != null) {
+            this.energy.setAmount(10);
+        }
+        if (this.maxLifePoints > this.race.getMaxLifePoints()) {
+            this.maxLifePoints = this.race.getMaxLifePoints();
+        }
+        this.lifePoints = this.maxLifePoints;
+    }
 
 	public Race getRace() {
 		return race;

@@ -17,7 +17,12 @@ public class PVE extends Battle {
     public int fight() {
         for (SimpleFighter enemy : environment) {
             while (player.getLifePoints() > 0 && enemy.getLifePoints() > 0) {
-                enemy.attack(player);
+            	System.out.println("Player3 - Defesa ---  " + player.getDefense());
+            	System.out.println("Player3 - Força ---  " + player.getStrength());
+            	System.out.println("Pontos de Vida ---  " + player.getLifePoints());
+            	System.out.println(" --- --- --- --- ---");
+            	System.out.println(" --- --- --- --- ---");
+            	enemy.attack(player);
                 player.attack(enemy);
             }
         }
